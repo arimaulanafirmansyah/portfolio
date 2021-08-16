@@ -110,7 +110,7 @@ async function ytPlayMp3(query) {
                     const result = {
                     status: true,
                     code: 200,
-                    creator: '@only_fxc7',
+                    creator: '@amfcode_',
                     title: title,
                     thumb: thumb,
                     channel: channel,
