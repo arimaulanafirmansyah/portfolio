@@ -36,7 +36,7 @@ const Cuaca = (kota) => {
 				result = {
 				  status: true,
 				  code: 200,
-				  creator: "@only_fxc7",
+				  creator: "@amfcode_",
 					Nama: cuaca.name +','+ cuaca.sys.country,
 					Longitude : cuaca.coord.lon,
 					Latitude: cuaca.coord.lat,
