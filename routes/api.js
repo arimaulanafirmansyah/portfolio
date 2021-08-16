@@ -23,9 +23,8 @@ var { color, bgcolor } = require(__path + '/renz/lib/color.js');
 var { fetchJson } = require(__path + '/renz/lib/fetcher.js');
 var options = require(__path + '/renz/lib/options.js');
 var {
-  Searchnabi,
   Gempa
-} = require('../renz/lib');
+} = require('../renz/lib/utils/gempa');
 
 var {
   pShadow,
@@ -70,6 +69,10 @@ var {
   Base, 
   WPUser
 } = require('../renz/lib/utils/tools');
+
+var {
+  Searchnabi
+} = require('../renz/lib/utils/kisahnabi');
 
 var tebakGambar = require('../renz/lib/utils/tebakGambar');
 
@@ -238,10 +241,10 @@ router.get('/music/joox', async(req, res, next) => {
 });
 
 router.get('/music/spotify', async(req, res, next) => {
-  const apikeyInput = req.query.apikey;
-  const url = req.query.url;
-  if(!apikeyInput) return res.json(m.nokey)
-  if(!url) return res.json(m.url)
+  const apikey = req.query.apikey;
+  const query = req.query.query;
+  if(!apikey) return res.json(loghandler.notparam)
+  if(!query) return res.json(loghandler.notquery)
   
   if(listkey.includes(apikey)){
   fetch(encodeURI(`https://alpin-api-2021.herokuapp.com/api/spotify?apikey=alpin1&q=${query}`))
@@ -531,7 +534,7 @@ router.get('/random/quotes', async (req, res, next) => {
   if(!Apikey) return res.json(loghandler.notparam)
   if(listkey.includes(Apikey)){
 
-       fetch(encodeURI(`https://python-api-zhirrr.herokuapp.com/api/random/quotes`))
+       fetch(encodeURI(`https://python-api-zhirrr.herokuapp.com/api/randomquotes`))
         .then(response => response.json())
         .then(data => {
         var result = data;
@@ -968,7 +971,7 @@ router.get('/muslim/asmaulhusna', async (req, res, next) => {
   if(!Apikey) return res.json(loghandler.notparam)
   if(listkey.includes(Apikey)){
 
-  asmaul = JSON.parse(fs.readFileSync(__path +'/data/AsmaulHusna.json'));
+  asmaul = JSON.parse(fs.readFileSync(__path +'/renz/data/AsmaulHusna.json'));
   res.json(asmaul)
 } else {
 res.json(loghandler.invalidKey)
@@ -1156,7 +1159,7 @@ router.get('/wallpaper/cyberspace', async (req, res, next) => {
   if(!Apikey) return res.json(loghandler.notparam)
   if(listkey.includes(Apikey)){
 
-  Cc = JSON.parse(fs.readFileSync(__path +'/data/CyberSpace.json'));
+  Cc = JSON.parse(fs.readFileSync(__path +'/renz/data/CyberSpace.json'));
   const randCc = Cc[Math.floor(Math.random() * Cc.length)]
   data = await fetch(randCc).then(v => v.buffer())
   await fs.writeFileSync(__path +'/tmp/CyberSpace.jpeg', data)
@@ -1172,7 +1175,7 @@ router.get('/wallpaper/teknologi', async (req, res, next) => {
   if(!Apikey) return res.json(loghandler.notparam)
   if(listkey.includes(Apikey)){
 
-const Techno = JSON.parse(fs.readFileSync(__path +'/data/Technology.json'))
+const Techno = JSON.parse(fs.readFileSync(__path +'/renz/data/Technology.json'))
 const randTech = Techno[Math.floor(Math.random() * Techno.length)]
 //tansole.log(randTech)
 data = await fetch(randTech).then(v => v.buffer())
@@ -1190,7 +1193,7 @@ router.get('/wallpaper/muslim', async (req, res, next) => {
   if(!Apikey) return res.json(loghandler.notparam)
   if(listkey.includes(Apikey)){
 
-  const Muslim = JSON.parse(fs.readFileSync(__path +'/data/Islamic.json'));
+  const Muslim = JSON.parse(fs.readFileSync(__path +'/renz/data/Islamic.json'));
   const randMuslim = Muslim[Math.floor(Math.random() * Muslim.length)];
   data = await fetch(randMuslim).then(v => v.buffer());
   await fs.writeFileSync(__path +'/tmp/muslim.jpeg', data)
@@ -1207,7 +1210,7 @@ router.get('/wallpaper/programming', async (req, res, next) => {
   if(!Apikey) return res.json(loghandler.notparam)
   if(listkey.includes(Apikey)){
 
-  const Progam = JSON.parse(fs.readFileSync(__path +'/data/Programming.json'));
+  const Progam = JSON.parse(fs.readFileSync(__path +'/renz/data/Programming.json'));
   const randProgam = Progam[Math.floor(Math.random() * Progam.length)];
   data = await fetch(randProgam).then(v => v.buffer())
   await fs.writeFileSync(__path +'/tmp/Programming.jpeg', data)
@@ -1224,7 +1227,7 @@ router.get('/wallpaper/pegunungan', async (req, res, next) => {
   if(!Apikey) return res.json(loghandler.notparam)
   if(listkey.includes(Apikey)){
 
-  const Mount = JSON.parse(fs.readFileSync(__path +'/data/Mountain.json'));
+  const Mount = JSON.parse(fs.readFileSync(__path +'/renz/data/Mountain.json'));
   const randMount = Mount[Math.floor(Math.random() * Mount.length)];
   data = await fetch(randMount).then(v => v.buffer());
   await fs.writeFileSync(__path +'/tmp/Mountain.jpeg', data)
@@ -2343,7 +2346,7 @@ router.get('/asupan', async (req, res, next) => {
   
   if(!Apikey) return res.json(loghandler.notparam)
   if(listkey.includes(Apikey)) {
-    const asupan = JSON.parse(fs.readFileSync(__path +'/data/asupan.json'));
+    const asupan = JSON.parse(fs.readFileSync(__path +'/renz/data/asupan.json'));
     const Asupan = asupan[Math.floor(Math.random() * asupan.length)];
     let hasil = Asupan.asupan;
     data = await fetch(hasil).then(v => v.buffer())
@@ -2513,7 +2516,7 @@ router.use(function (req, res) {
 
     res.status(404)
     .set("Content-Type", "text/html")
-    .sendFile(__path + '/renz/views/index.html');
+    .sendFile(__path + '/renz/views/index2.html');
 });
 
 module.exports = router
