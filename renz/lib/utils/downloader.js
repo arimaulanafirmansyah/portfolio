@@ -37,7 +37,6 @@ const FB = (url) => new Promise((resolve, reject) => {
 	fbdl.getInfo(url)
 	.then(res => {
 		resolve({
-			title: res.title,
 			deskripsi: res.description,
 			thumbnail: res.thumbnail,
 			durasi: res.duration,
