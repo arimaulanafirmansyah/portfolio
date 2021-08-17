@@ -93,6 +93,12 @@ loghandler = {
         code: 406,
         message: 'masukan parameter url'
     },
+	notid: {
+        status: false,
+        creator: `${creator}`,
+        code: 406,
+        message: 'masukan parameter id'
+    },
     notquery: {
         status: false,
         creator: `${creator}`,
@@ -154,6 +160,11 @@ loghandler = {
         message: `Apikey invalid!! untuk mendapatkan apikey chat whatsapp wa.me/6285157792618`
     },
     invalidlink: {
+        status: false,
+        creator: `${creator}`,
+        message: 'error, mungkin link anda tidak valid.'
+    },
+	invalidid: {
         status: false,
         creator: `${creator}`,
         message: 'error, mungkin link anda tidak valid.'
@@ -2338,7 +2349,7 @@ router.get('/game/ff', async (req, res, next) => {
 
   if(!Apikey) return res.json(loghandler.notparam)
   if(listkey.includes(Apikey)){
-     if (!id) return res.json(loghandler.noturl)
+     if (!id) return res.json(loghandler.notid)
      request(`https://api-flashcode.xyz/FFID/${id}`, function (error, response, body) {
          try {
              res.json({
@@ -2348,7 +2359,7 @@ router.get('/game/ff', async (req, res, next) => {
              })
          } catch (e) {
              console.log('Error :', color(e,'red'))
-             res.json(loghandler.invalidlink)
+             res.json(loghandler.invalidid)
          }
      })
    } else {
