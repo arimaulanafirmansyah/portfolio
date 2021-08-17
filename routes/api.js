@@ -709,22 +709,24 @@ router.get('/info/cuaca', async(req, res, next) => {
   }
 })
 router.get('/info/gempa', async (req, res, next) => {
-          var Apikey = req.query.apikey
+        var Apikey = req.query.apikey
+            
+  if(!Apikey) return res.json(loghandler.notparam)
+  if(listkey.includes(Apikey)){
 
-    if (!Apikey) return res.json(loghandler.notparam)
-    if (listkey.includes(Apikey)){
-    Gempa()
-    .then(result => {
-      res.json({
-        creator: creator,
-        result
-      })
-    })
-    .catch(e => {
-      console.log('Error :', color(e, 'red'))
-      res.json(loghandler.error)
-    })
-  } else {
+       fetch(encodeURI(`https://python-api-zhirrr.herokuapp.com/api/infogempa`))
+        .then(response => response.json())
+        .then(data => {
+        var result = data;
+             res.json({
+                 creator : `${creator}`,
+                 result
+             })
+         })
+         .catch(e => {
+          res.json(loghandler.error)
+})
+} else {
 res.json(loghandler.invalidKey)
 }
 })
@@ -2324,6 +2326,38 @@ router.get('/textpro/porn-hub', async(req, res, next) => {
 
 /*
 @AKHIR TEXTPRO ME
+*/
+
+/*
+@ CEK ID GAME
+*/
+
+router.get('/game/ff', async (req, res, next) => {
+    var Apikey = req.query.apikey,
+        id = req.query.id
+
+  if(!Apikey) return res.json(loghandler.notparam)
+  if(listkey.includes(Apikey)){
+     if (!id) return res.json(loghandler.noturl)
+     request(`https://api-flashcode.xyz/FFID/${id}`, function (error, response, body) {
+         try {
+             res.json({
+                 status : true,
+                 creator : `${creator}`,
+				 username : `${body}`
+             })
+         } catch (e) {
+             console.log('Error :', color(e,'red'))
+             res.json(loghandler.invalidlink)
+         }
+     })
+   } else {
+res.json(loghandler.invalidKey)
+}
+})
+
+/*
+@ END CEK ID GAME
 */
 
 router.get('/maker/dadu', async (req, res, next) => {
