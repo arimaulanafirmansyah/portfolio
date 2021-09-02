@@ -2550,7 +2550,7 @@ router.get('/cekapikey', async(req, res, next) => {
       status: 'active',
       creator: `${creator}`,
       apikey: `${apikey}`,
-      message: 'APIKEY ACTIVE'
+      message: 'APIKEY ACTIVE, LIMIT UNLIMITIDE'
     })
   } else {
     res.json(loghandler.invalidKey)
@@ -2561,7 +2561,7 @@ router.use(function (req, res) {
 
     res.status(404)
     .set("Content-Type", "text/html")
-    .sendFile(__path + '/renz/views/index2.html');
+    .sendFile(__path + '/renz/views/404.html');
 });
 
 module.exports = router
