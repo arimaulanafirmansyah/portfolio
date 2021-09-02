@@ -2367,6 +2367,31 @@ res.json(loghandler.invalidKey)
 }
 })
 
+router.get('/game/ff', async (req, res, next) => {
+    var Apikey = req.query.apikey,
+        id = req.query.id
+    	zone = req.query.zone
+
+  if(!Apikey) return res.json(loghandler.notparam)
+  if(listkey.includes(Apikey)){
+     if (!id) return res.json(loghandler.notid)
+     request(`https://api-xyz.com/trueid/mobilelegends/?${id}&${zone}&token=NguyenThuWan`, function (error, response, body) {
+         try {
+             res.json({
+                 status : true,
+                 creator : `${creator}`,
+				 username : `${body}`
+             })
+         } catch (e) {
+             console.log('Error :', color(e,'red'))
+             res.json(loghandler.invalidid)
+         }
+     })
+   } else {
+res.json(loghandler.invalidKey)
+}
+})
+
 /*
 @ END CEK ID GAME
 */
