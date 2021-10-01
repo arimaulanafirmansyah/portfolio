@@ -2367,15 +2367,14 @@ res.json(loghandler.invalidKey)
 }
 })
 
-router.get('/game/ff', async (req, res, next) => {
+router.get('/game/ml', async (req, res, next) => {
     var Apikey = req.query.apikey,
         id = req.query.id
-    	zone = req.query.zone
 
   if(!Apikey) return res.json(loghandler.notparam)
   if(listkey.includes(Apikey)){
      if (!id) return res.json(loghandler.notid)
-     request(`https://api-xyz.com/trueid/mobilelegends/?${id}&${zone}&token=NguyenThuWan`, function (error, response, body) {
+     request(`https://beliscript.com/apiCheckGame.php?id=2&data=${id}`, function (error, response, body) {
          try {
              res.json({
                  status : true,
