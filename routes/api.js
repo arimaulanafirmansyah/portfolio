@@ -405,32 +405,31 @@ res.json(loghandler.invalidKey)
 }
 })
 
-router.get('/download/ig', async(req, res, next) => {
-  const url = req.query.url;
-  const apikey = req.query.apikey;
-  if(!url) return res.json(loghandler.noturl)
-  if(!apikey) return res.json(loghandler.notparam)
-  if(listkey.includes(apikey)){
-  igDownload(url)
-    .then((data) => {
-      result = {
-        status: true,
-        code: 200,
-        creator: `${creator}`,
-        id: data.id,
-        shortCode: data.shortCode,
-        caption: data.caption,
-        result: data.url
-      }
-      res.json(result)
-    })
-    .catch((err) => {
-      res.json(err);
-    });
-    } else {
-      res.json(loghandler.invalidKey)
-    }
-});
+router.get('/stalk/ig', async (req, res, next) => {
+        var Apikey = req.query.apikey,
+            username = req.query.username
+            
+  if(!Apikey) return res.json(loghandler.notparam)
+  if(listkey.includes(Apikey)){
+    if (!username) return res.json({ status : false, creator : `${creator}`, message : "masukan parameter username"})
+
+       fetch(encodeURI(`https://rei-api.herokuapp.com/api/dl/ig?url=${username}`))
+        .then(response => response.json())
+        .then(data => {
+        var result = data;
+             res.json({
+                 status : true,
+                 creator : `${creator}`,
+                 result
+             })
+         })
+         .catch(e => {
+          res.json(loghandler.error)
+})
+} else {
+res.json(loghandler.invalidKey)
+}
+})
 
 router.get('/download/fb', async (req, res, next) => {
 
@@ -488,26 +487,30 @@ res.json(loghandler.invalidKey)
 }
 })
 
-router.get('/stalk/ig', async(req, res, next) => {
-  const username = req.query.username;
+router.get('/download/ig', async(req, res, next) => {
+  const url = req.query.url;
   const apikey = req.query.apikey;
-  if(!username) return res.json(loghandler.notusername)
+  if(!url) return res.json(loghandler.noturl)
   if(!apikey) return res.json(loghandler.notparam)
   if(listkey.includes(apikey)){
-  igStalk(username)
-    .then((result) => {
-      res.json({
-        status : true,
+  igDownload(url)
+    .then((data) => {
+      result = {
+        status: true,
         code: 200,
-        creator : `${creator}`,
-        result
-      });
+        creator: `${creator}`,
+        id: data.id,
+        shortCode: data.shortCode,
+        caption: data.caption,
+        result: data.url
+      }
+      res.json(result)
     })
     .catch((err) => {
       res.json(err);
     });
     } else {
-      res.json(loghandler.invalidKey)
+        res.json(loghandler.invalidKey)
     }
 });
 
