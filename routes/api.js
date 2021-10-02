@@ -2350,12 +2350,13 @@ router.get('/game/ff', async (req, res, next) => {
   if(!Apikey) return res.json(loghandler.notparam)
   if(listkey.includes(Apikey)){
      if (!id) return res.json(loghandler.notid)
-     request(`https://api-flashcode.xyz/FFID/${id}`, function (error, response, body) {
+     request(`https://beliscript.com/apiCheckGame.php?id=1&data=${id}`, function (error, response, body) {
          try {
+            var data = JSON.parse(body);
              res.json({
-                 status : true,
-                 creator : `${creator}`,
-				 username : `${body}`
+                status : true,
+                creator : `${creator}`,
+                nickname: data.data.name
              })
          } catch (e) {
              console.log('Error :', color(e,'red'))
@@ -2376,10 +2377,61 @@ router.get('/game/ml', async (req, res, next) => {
      if (!id) return res.json(loghandler.notid)
      request(`https://beliscript.com/apiCheckGame.php?id=2&data=${id}`, function (error, response, body) {
          try {
+            var data = JSON.parse(body);
              res.json({
-                 status : true,
-                 creator : `${creator}`,
-				 username : `${body}`
+                status : true,
+                creator : `${creator}`,
+                nickname: data.data.name
+             })
+         } catch (e) {
+             console.log('Error :', color(e,'red'))
+             res.json(loghandler.invalidid)
+         }
+     })
+   } else {
+res.json(loghandler.invalidKey)
+}
+})
+
+router.get('/game/hdi', async (req, res, next) => {
+    var Apikey = req.query.apikey,
+        id = req.query.id
+
+  if(!Apikey) return res.json(loghandler.notparam)
+  if(listkey.includes(Apikey)){
+     if (!id) return res.json(loghandler.notid)
+     request(`https://beliscript.com/apiCheckGame.php?id=17&data=${id}`, function (error, response, body) {
+         try {
+            var data = JSON.parse(body);
+             res.json({
+                status : true,
+                creator : `${creator}`,
+                nickname: data.data.name
+             })
+         } catch (e) {
+             console.log('Error :', color(e,'red'))
+             res.json(loghandler.invalidid)
+         }
+     })
+   } else {
+res.json(loghandler.invalidKey)
+}
+})
+
+router.get('/game/pb', async (req, res, next) => {
+    var Apikey = req.query.apikey,
+        user = req.query.user
+
+  if(!Apikey) return res.json(loghandler.notparam)
+  if(listkey.includes(Apikey)){
+     if (!user) return res.json(loghandler.notid)
+     request(`https://beliscript.com/apiCheckGame.php?id=16&data=${user}`, function (error, response, body) {
+         try {
+            var data = JSON.parse(body);
+             res.json({
+                status : true,
+                creator : `${creator}`,
+                nickname: data.data.name
              })
          } catch (e) {
              console.log('Error :', color(e,'red'))
