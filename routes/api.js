@@ -185,7 +185,7 @@ loghandler = {
 Akhir Pesan Error
 */
 
-const listkey = ["amfcode", "trial"];
+const listkey = ["amfcode", "trial", "ulung"];
 
 router.post("/apikey", async (req, res, next) => {
   const key = req.query.key;
