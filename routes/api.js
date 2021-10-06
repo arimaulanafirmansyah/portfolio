@@ -173,7 +173,7 @@ loghandler = {
 	invalidMl: {
         status: false,
         creator: `${creator}`,
-        message: 'error, mungkin id anda tidak valid.'
+        message: 'error, mungkin id atau userid anda tidak valid.'
     },
     invalidkata: {
         status: false,
