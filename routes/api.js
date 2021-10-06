@@ -153,6 +153,12 @@ loghandler = {
         code: 406,
         message: 'masukan parameter value'
     },
+    notvalue: {
+        status: false,
+        creator: `${creator}`,
+        code: 406,
+        message: 'masukan parameter username'
+    },
     invalidKey: {
         status: false,
         creator: `${creator}`,
@@ -164,15 +170,20 @@ loghandler = {
         creator: `${creator}`,
         message: 'error, mungkin link anda tidak valid.'
     },
-	invalidid: {
+	invalidMl: {
         status: false,
         creator: `${creator}`,
-        message: 'error, mungkin link anda tidak valid.'
+        message: 'error, mungkin id anda tidak valid.'
     },
     invalidkata: {
         status: false,
         creator: `${creator}`,
         message: 'error, mungkin kata tidak ada dalam api.'
+    },
+    invalidusername: {
+        status: false,
+        creator: `${creator}`,
+        message: 'error, username tidak di temukan api.'
     },
     error: {
         status: false,
@@ -404,7 +415,6 @@ router.get('/download/tiktok', async (req, res, next) => {
 res.json(loghandler.invalidKey)
 }
 })
-
 router.get('/stalk/ig', async (req, res, next) => {
         var Apikey = req.query.apikey,
             username = req.query.username
@@ -424,7 +434,7 @@ router.get('/stalk/ig', async (req, res, next) => {
              })
          })
          .catch(e => {
-          res.json(loghandler.error)
+          res.json(loghandler.invalidusername)
 })
 } else {
 res.json(loghandler.invalidKey)
@@ -2363,7 +2373,7 @@ router.get('/game/ff', async (req, res, next) => {
              })
          } catch (e) {
              console.log('Error :', color(e,'red'))
-             res.json(loghandler.invalidid)
+             res.json(loghandler.invalidId)
          }
      })
    } else {
@@ -2374,11 +2384,13 @@ res.json(loghandler.invalidKey)
 router.get('/game/ml', async (req, res, next) => {
     var Apikey = req.query.apikey,
         id = req.query.id
+        userid = req.query.userid
 
   if(!Apikey) return res.json(loghandler.notparam)
   if(listkey.includes(Apikey)){
      if (!id) return res.json(loghandler.notid)
-     request(`https://beliscript.com/apiCheckGame.php?id=2&data=${id}`, function (error, response, body) {
+    if (!userid) return res.json(loghandler.userid)
+     request(`https://beliscript.com/apiCheckGame.php?id=2&data=${id}_${userid}`, function (error, response, body) {
          try {
             var data = JSON.parse(body);
              res.json({
@@ -2388,7 +2400,7 @@ router.get('/game/ml', async (req, res, next) => {
              })
          } catch (e) {
              console.log('Error :', color(e,'red'))
-             res.json(loghandler.invalidid)
+             res.json(loghandler.invalidMl)
          }
      })
    } else {
@@ -2413,7 +2425,7 @@ router.get('/game/hdi', async (req, res, next) => {
              })
          } catch (e) {
              console.log('Error :', color(e,'red'))
-             res.json(loghandler.invalidid)
+             res.json(loghandler.invalidId)
          }
      })
    } else {
@@ -2438,7 +2450,7 @@ router.get('/game/pb', async (req, res, next) => {
              })
          } catch (e) {
              console.log('Error :', color(e,'red'))
-             res.json(loghandler.invalidid)
+             res.json(loghandler.invalidId)
          }
      })
    } else {
