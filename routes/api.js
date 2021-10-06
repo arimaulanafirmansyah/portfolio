@@ -413,7 +413,7 @@ router.get('/stalk/ig', async (req, res, next) => {
   if(listkey.includes(Apikey)){
     if (!username) return res.json({ status : false, creator : `${creator}`, message : "masukan parameter username"})
 
-       fetch(encodeURI(`https://rei-api.herokuapp.com/api/dl/ig?url=${username}`))
+       fetch(encodeURI(`https://docs-jojo.herokuapp.com/api/stalk?username=${username}`))
         .then(response => response.json())
         .then(data => {
         var result = data;
