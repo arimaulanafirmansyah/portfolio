@@ -94,14 +94,14 @@ $ip_add = $_SERVER['REMOTE_ADDR'];
 					</div>
 				</div>
 				<div class="card">
-					<div class="numbers"><?php echo date('d-m-Y'); ?></div><br>
+					<div class="numbers" id="jam"></div><br>
 					<div class="cardName">Date</div>
 					<div class="iconBx">
 						<ion-icon name="calendar-outline"></ion-icon>
 					</div>
 				</div>
 				<div class="card">
-					<div class="numbers"><?php echo $ip_add; ?></div>
+					<div class="numbers" id="api"></div>
 					<div class="cardName">Ip Address</div>
 					<div class="iconBx">
 						<ion-icon name="globe-outline"></ion-icon>
@@ -151,5 +151,43 @@ $ip_add = $_SERVER['REMOTE_ADDR'];
 		list.forEach((item) =>
 			item.addEventListener('mouseover',activeLink))
 	</script>
+	<script type="text/javascript">
+    window.onload = function() { jam(); }
+   
+    function jam() {
+     var e = document.getElementById('jam'),
+     d = new Date(), h, m, s;
+     h = d.getHours();
+     m = set(d.getMinutes());
+     s = set(d.getSeconds());
+   
+     e.innerHTML = h +':'+ m +':'+ s;
+   
+     setTimeout('jam()', 1000);
+    }
+   
+    function set(e) {
+     e = e < 10 ? '0'+ e : e;
+     return e;
+    }
+   </script>
+   <script src=
+"https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js">
+    </script>
+  
+    <script>
+        /* Add "https://api.ipify.org?format=json" statement
+           this will communicate with the ipify servers in
+           order to retrieve the IP address $.getJSON will
+           load JSON-encoded data from the server using a
+           GET HTTP request */
+  
+        $.getJSON("https://api.ipify.org?format=json",
+                                          function(data) {
+  
+            // Setting text of element P with id ip
+            $("#ip").html(data.ip);
+        })
+    </script>
 </body>
 </html>
