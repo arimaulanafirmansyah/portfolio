@@ -87,7 +87,7 @@ $ip_add = $_SERVER['REMOTE_ADDR'];
 			<!-- cards -->
 			<div class="cardBox">
 				<div class="card">
-					<div class="numbers">1,504</div>
+					<div class="numbers" id="visit"></div>
 					<div class="cardName">Daily Views</div>
 					<div class="iconBx">
 						<ion-icon name="eye-outline"></ion-icon>
@@ -126,7 +126,7 @@ $ip_add = $_SERVER['REMOTE_ADDR'];
 		</div>
 	</div>
 
-	<script type="module" src="https://unpkg.com/ionicons@5.5.2/dist/ionicons/ionicons.esm.js"></script>
+   <script type="module" src="https://unpkg.com/ionicons@5.5.2/dist/ionicons/ionicons.esm.js"></script>
 	<script nomodule src="https://unpkg.com/ionicons@5.5.2/dist/ionicons/ionicons.js"></script>
 	<script>
 		let toggle = document.querySelector('.toggle');
@@ -148,5 +148,60 @@ $ip_add = $_SERVER['REMOTE_ADDR'];
 		list.forEach((item) =>
 			item.addEventListener('mouseover',activeLink))
 	</script>
+	<script type="text/javascript">
+    window.onload = function() { jam(); }
+   
+    function jam() {
+     var e = document.getElementById('jam'),
+     d = new Date(), h, m, s;
+     h = d.getHours();
+     m = set(d.getMinutes());
+     s = set(d.getSeconds());
+   
+     e.innerHTML = h +':'+ m +':'+ s;
+   
+     setTimeout('jam()', 1000);
+    }
+   
+    function set(e) {
+     e = e < 10 ? '0'+ e : e;
+     return e;
+    }
+   </script>
+   <script src=
+"https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js">
+    </script>
+  
+    <script>
+        /* Add "https://api.ipify.org?format=json" statement
+           this will communicate with the ipify servers in
+           order to retrieve the IP address $.getJSON will
+           load JSON-encoded data from the server using a
+           GET HTTP request */
+  
+        $.getJSON("https://api.ipify.org?format=json",
+                                          function(data) {
+  
+            // Setting text of element P with id ip
+            $("#ip").html(data.ip);
+        })
+    </script>
+    <script>
+var n = localStorage.getItem('on_load_counter');
+
+if (n === null) {
+  n = 0;
+}
+n++;
+
+localStorage.setItem("on_load_counter", n);
+
+nums = n.toString().split('').map(Number);
+document.getElementById('visit').innerHTML = '';
+for (var i of nums) {
+  document.getElementById('visit').innerHTML += '<span class="counter-item">' + i + '</span>';
+}
+
+</script>
 </body>
 </html>
