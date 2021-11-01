@@ -401,17 +401,27 @@ router.get('/yt/search', async(req, res, next) => {
 });
 
 router.get('/download/tiktok', async (req, res, next) => {
-    var Apikey = req.query.apikey,
-        url = req.query.url
-
+        var Apikey = req.query.apikey,
+            url = req.query.url
+            
   if(!Apikey) return res.json(loghandler.notparam)
   if(listkey.includes(Apikey)){
-     if (!url) return res.json(loghandler.noturl)
-     Tiktok(url)
-     .then((data) => {
-       res.json(data)
-     })
-    } else {
+    if (!url) return res.json({ status : false, creator : `${creator}`, message : "masukan parameter url"})
+
+       fetch(encodeURI(`https://docs-jojo.herokuapp.com/api/tiktok_nowm?url=${url}`))
+        .then(response => response.json())
+        .then(data => {
+        var result = data;
+             res.json({
+                 status : true,
+                 creator : `${creator}`,
+                 result
+             })
+         })
+         .catch(e => {
+          res.json(loghandler.noturl)
+})
+} else {
 res.json(loghandler.invalidKey)
 }
 })
