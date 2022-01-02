@@ -2373,13 +2373,12 @@ router.get('/game/ff', async (req, res, next) => {
   if(!Apikey) return res.json(loghandler.notparam)
   if(listkey.includes(Apikey)){
      if (!id) return res.json(loghandler.notid)
-     request(`https://beliscript.com/apiCheckGame.php?id=1&data=${id}`, function (error, response, body) {
+     request(`https://api.nichicodex.xyz/idFF/?id=${id}`, function (error, response, body) {
          try {
-            var data = JSON.parse(body);
              res.json({
                 status : true,
                 creator : `${creator}`,
-                nickname: data.data.name
+                result : `${body}`
              })
          } catch (e) {
              console.log('Error :', color(e,'red'))
@@ -2400,13 +2399,13 @@ router.get('/game/ml', async (req, res, next) => {
   if(listkey.includes(Apikey)){
      if (!id) return res.json(loghandler.notid)
     if (!userid) return res.json(loghandler.userid)
-     request(`https://beliscript.com/apiCheckGame.php?id=2&data=${id}_${userid}`, function (error, response, body) {
+     request(`https://alexhost.my.id/true_id/ml/?id=${id}&zone=${userid}&token=AlexHost`, function (error, response, body) {
          try {
-            var data = JSON.parse(body);
+           var data = JSON.parse(body)
              res.json({
                 status : true,
                 creator : `${creator}`,
-                nickname: data.data.name
+                nickname: data.nickname
              })
          } catch (e) {
              console.log('Error :', color(e,'red'))
