@@ -2399,7 +2399,7 @@ router.get('/game/ml', async (req, res, next) => {
   if(listkey.includes(Apikey)){
      if (!id) return res.json(loghandler.notid)
     if (!userid) return res.json(loghandler.userid)
-     request(`https://alexhost.my.id/true_id/ml/?id=${id}&zone=${userid}&token=AlexHost`, function (error, response, body) {
+     request(`http://alexhost.my.id/true_id/ml/?id=${id}&zone=${userid}&token=AlexHost`, function (error, response, body) {
          try {
            var data = JSON.parse(body)
              res.json({
