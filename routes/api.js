@@ -65,10 +65,6 @@ var {
   Lirik
 } = require('../renz/lib/utils/information');
 
-var {
-  Base, 
-  WPUser
-} = require('../renz/lib/utils/tools');
 
 var {
   Searchnabi
@@ -408,7 +404,7 @@ router.get('/download/tiktok', async (req, res, next) => {
   if(listkey.includes(Apikey)){
     if (!url) return res.json({ status : false, creator : `${creator}`, message : "masukan parameter url"})
 
-       fetch(encodeURI(`https://docs-jojo.herokuapp.com/api/tiktok_nowm?url=${url}`))
+       fetch(encodeURI(`http://localhost:4000/tiktok?URL=${url}`))
         .then(response => response.json())
         .then(data => {
         var result = data;
@@ -451,8 +447,7 @@ res.json(loghandler.invalidKey)
 }
 })
 
-router.get('/download/fb', async (req, res, next) => {
-
+router.get('/download/fbdl', async (req, res, next) => {
         var Apikey = req.query.apikey,
             url = req.query.url
             
@@ -460,23 +455,23 @@ router.get('/download/fb', async (req, res, next) => {
   if(listkey.includes(Apikey)){
     if (!url) return res.json({ status : false, creator : `${creator}`, message : "masukan parameter url"})
 
-       FB(url)
-       .then((data) => {
-         res.json({
-           status: true,
-           code: 200,
-           creator: `${creator}`,
-           title: data.title,
-           desc: data.deskripsi,
-           durasi: data.durasi,
-           thumb: data.thumbnail,
-           result: data.hd
+       fetch(encodeURI(`http://localhost:4000/fbdl?URL=${url}`))
+        .then(response => response.json())
+        .then(data => {
+        var result = data;
+             res.json({
+                 status : true,
+                 creator : `${creator}`,
+                 result
+             })
          })
-       });
+         .catch(e => {
+          res.json(loghandler.noturl)
+})
 } else {
 res.json(loghandler.invalidKey)
 }
-});
+})
 
 router.get('/stalk/tiktok', async (req, res, next) => {
     var Apikey = req.query.apikey,
@@ -507,32 +502,31 @@ res.json(loghandler.invalidKey)
 }
 })
 
-router.get('/download/ig', async(req, res, next) => {
-  const url = req.query.url;
-  const apikey = req.query.apikey;
-  if(!url) return res.json(loghandler.noturl)
-  if(!apikey) return res.json(loghandler.notparam)
-  if(listkey.includes(apikey)){
-  igDownload(url)
-    .then((data) => {
-      result = {
-        status: true,
-        code: 200,
-        creator: `${creator}`,
-        id: data.id,
-        shortCode: data.shortCode,
-        caption: data.caption,
-        result: data.url
-      }
-      res.json(result)
-    })
-    .catch((err) => {
-      res.json(err);
-    });
-    } else {
-        res.json(loghandler.invalidKey)
-    }
-});
+router.get('/download/igdl', async (req, res, next) => {
+        var Apikey = req.query.apikey,
+            url = req.query.url
+            
+  if(!Apikey) return res.json(loghandler.notparam)
+  if(listkey.includes(Apikey)){
+    if (!url) return res.json({ status : false, creator : `${creator}`, message : "masukan parameter url"})
+
+       fetch(encodeURI(`http://localhost:4000/igdl?URL=${url}`))
+        .then(response => response.json())
+        .then(data => {
+        var result = data;
+             res.json({
+                 status : true,
+                 creator : `${creator}`,
+                 result
+             })
+         })
+         .catch(e => {
+          res.json(loghandler.noturl)
+})
+} else {
+res.json(loghandler.invalidKey)
+}
+})
 
 
 router.get('/stalk/npm', async (req, res, next) => {
@@ -2366,6 +2360,34 @@ router.get('/textpro/porn-hub', async(req, res, next) => {
 @ CEK ID GAME
 */
 
+
+router.get('/game/hdi', async (req, res, next) => {
+    var Apikey = req.query.apikey,
+        id = req.query.id
+
+  if(!Apikey) return res.json(loghandler.notparam)
+  if(listkey.includes(Apikey)){
+     if (!id) return res.json(loghandler.notid)
+     request.post(`https://api.duniagames.co.id/api/transaction/v1/top-up/inquiry/store?productId=61&itemId=416&catalogId=442&paymentId=1611&gameId=${id}&product_ref=REG`, function (error, response, body) {
+         try {
+            var data = JSON.parse(body)
+             res.json({
+                status : true,
+                creator : `${creator}`,
+                result : {
+                  nickname : data.data.userNameGame
+                }
+             })
+         } catch (e) {
+             console.log('Error :', color(e,'red'))
+             res.json(loghandler.invalidMl)
+         }
+     })
+   } else {
+res.json(loghandler.invalidKey)
+}
+})
+
 router.get('/game/ff', async (req, res, next) => {
     var Apikey = req.query.apikey,
         id = req.query.id
@@ -2378,7 +2400,9 @@ router.get('/game/ff', async (req, res, next) => {
              res.json({
                 status : true,
                 creator : `${creator}`,
-                result : `${body}`
+                result : {
+                  nickname : `${body}`
+                }
              })
          } catch (e) {
              console.log('Error :', color(e,'red'))
@@ -2405,7 +2429,9 @@ router.get('/game/ml', async (req, res, next) => {
              res.json({
                 status : true,
                 creator : `${creator}`,
-                nickname: data.nickname
+                result: {
+                  nickname : data.nickname
+                } 
              })
          } catch (e) {
              console.log('Error :', color(e,'red'))
