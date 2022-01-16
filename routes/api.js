@@ -2374,9 +2374,7 @@ router.get('/game/hdi', async (req, res, next) => {
              res.json({
                 status : true,
                 creator : `${creator}`,
-                result : {
-                  nickname : data.data.userNameGame
-                }
+                nickname : data.data.userNameGame
              })
          } catch (e) {
              console.log('Error :', color(e,'red'))
@@ -2400,9 +2398,7 @@ router.get('/game/ff', async (req, res, next) => {
              res.json({
                 status : true,
                 creator : `${creator}`,
-                result : {
-                  nickname : `${body}`
-                }
+                nickname : `${body}`
              })
          } catch (e) {
              console.log('Error :', color(e,'red'))
@@ -2429,9 +2425,7 @@ router.get('/game/ml', async (req, res, next) => {
              res.json({
                 status : true,
                 creator : `${creator}`,
-                result: {
-                  nickname : data.nickname
-                } 
+                nickname : data.nickname 
              })
          } catch (e) {
              console.log('Error :', color(e,'red'))
