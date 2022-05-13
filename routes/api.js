@@ -181,6 +181,11 @@ loghandler = {
         creator: `${creator}`,
         message: 'error, username tidak di temukan api.'
     },
+    invalidphone: {
+        status: false,
+        creator: `${creator}`,
+        message: 'error, masukan Param phone'
+   },
     error: {
         status: false,
         creator: `${creator}`,
@@ -2360,7 +2365,30 @@ router.get('/textpro/porn-hub', async(req, res, next) => {
 @ CEK ID GAME
 */
 
+router.get('/tools/sms', async (req, res, next) => {
+    var Apikey = req.query.apikey,
+        phone = req.query.phone
 
+  if(!Apikey) return res.json(loghandler.notparam)
+  if(listkey.includes(Apikey)){
+     if (!phone) return res.json(loghandler.notphone)
+     request(`ainxbot-sms.herokuapp.com/api/spamsms?phone=${phone}`, function (error, response, body) {
+         try {
+            var data = JSON.parse(body)
+             res.json({
+                status : true,
+                creator : `${creator}`,
+                message :`Success`
+             })
+         } catch (e) {
+             console.log('Error :', color(e,'red'))
+             res.json(loghandler.invalidphone)
+         }
+     })
+   } else {
+res.json(loghandler.invalidKey)
+}
+})
 router.get('/game/hdi', async (req, res, next) => {
     var Apikey = req.query.apikey,
         id = req.query.id
